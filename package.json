@@ -1,0 +1,21 @@
+{
+  "name": "crypto-bot",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/bot.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "ccxt": "^4.4.99",
+    "dotenv": "^17.2.1",
+    "node-fetch": "^3.3.2",
+    "technicalindicators": "^3.1.0",
+    "ws": "^8.18.3"
+  }
+}
