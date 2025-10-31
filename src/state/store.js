@@ -1,4 +1,3 @@
-// state/store.js
 import fs from "fs";
 import path from "path";
 
@@ -26,12 +25,7 @@ function initialState() {
     realizedPnlUSDT: 0,
 
     // trade history
-    trades: [
-      // {
-      //   ts, side: 'buy'|'sell', symbol,
-      //   price, baseQty, quoteQty, feeQuote, stepId, lotRef?
-      // }
-    ],
+    trades: [],
   };
 }
 
@@ -64,4 +58,18 @@ export function saveState(state) {
   const tmp = STATE_FILE + ".tmp";
   fs.writeFileSync(tmp, JSON.stringify(state, null, 2));
   fs.renameSync(tmp, STATE_FILE);
+  console.log("[STATE] Saved state:", {
+    balances: state.balances,
+    lots: state.lots.length,
+    trades: state.trades.length,
+    pnl: state.realizedPnlUSDT,
+  });
+}
+
+
+export function resetState() {
+  ensureDir();
+  const init = initialState();
+  fs.writeFileSync(STATE_FILE, JSON.stringify(init, null, 2));
+  return init;
 }

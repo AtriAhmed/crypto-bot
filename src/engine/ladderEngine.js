@@ -214,7 +214,11 @@ export async function evaluateSymbol(symbol, symbolConfig, global) {
         : step;
 
     const ok = triggerSatisfied(stepForCheck, priceMid, null);
-    if (!ok) continue;
+    if (!ok) {
+  console.log(`[STEP SKIP] ${symbol} step=${step.id} trigger not satisfied`);
+  continue;
+}
+
 
     // Determine cost and base to buy
     let desiredQuote, baseAmt;
@@ -336,7 +340,10 @@ export async function evaluateSymbol(symbol, symbolConfig, global) {
 
     for (const lot of lots) {
       const ok = triggerSatisfied(step, priceMid, lot);
-      if (!ok) continue;
+      if (!ok) {
+        console.log(`[STEP] ${symbol} ${step.id} not triggered. reason=condition_false`);
+        continue
+      }
 
       const fillPrice = slipPriceMid(priceMid, "sell");
       let baseToSell;
@@ -347,7 +354,11 @@ export async function evaluateSymbol(symbol, symbolConfig, global) {
         continue;
       }
 
-      if (baseToSell <= 0) continue;
+      if (baseToSell <= 0) {
+  console.log(`[STEP SKIP] ${symbol} step=${step.id} baseToSell=0`);
+  continue;
+}
+
 
       // precision & min notional
       const m = await getMarket(symbol);
@@ -357,7 +368,11 @@ export async function evaluateSymbol(symbol, symbolConfig, global) {
         console.log(`[SKIP] ${symbol} SELL ${step.id} min notional not met: cost=${grossQuote}`);
         continue;
       }
-      if (baseToSell <= 0) continue;
+if (baseToSell <= 0) {
+  console.log(`[STEP SKIP] ${symbol} step=${step.id} baseToSell=0`);
+  continue;
+}
+
 
       if (global.live) {
         // REAL ORDER
